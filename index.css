@@ -1,0 +1,12 @@
+* {
+  font-family: "Courier New", Courier, monospace;
+
+  box-sizing: border-box;
+  list-style: none;
+}
+
+body {
+  text-align: center;
+
+  min-height: 200vh;
+}
