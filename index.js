@@ -1,43 +1,56 @@
 // @ts-nocheck
-//
-const questionContainer = document.querySelector(".click-event");
+const tableauQuestion = document.getElementById("tableauQuestion");
+const answers = document.querySelector(".option-reponse");
+const NextQuestion = document.getElementById("btn-1");
 
-const btn1 = document.querySelector("#btn-1");
-const btn2 = document.querySelector("#btn-2");
-const btn3 = document.getElementById("btn-3");
-const answer = document.querySelector("p");
-//console.log(answer);
+// Mettre le nombre de Q repondu et score final à 0//
+let numberQuestion = 0;
+let scoreFinal = 0;
 
-//console.log(btn1, btn2, btn3);
+// Creer le tableau de questions
+const tableauData = [
+  {
+    Question: "Capital de la France",
+    Answer: ["Madrid", "Paris", "Bruzelle"],
+    correct: "Paris",
+  },
+];
+// Faire apparaitre la premier question
+// fonction d'envoi de la question //
+const affichageQUestion = function () {
+  const q = tableauData[0];
+  tableauQuestion.textContent = q.Question + " ?";
+};
+document.addEventListener("DOMContentLoaded", () => {
+  affichageQUestion();
+  console.log(affichageQUestion());
+});
+console.log(affichageQUestion());
 
-questionContainer.addEventListener("click", () => {
-  questionContainer.classList.toggle("question-click");
+// fonction d'envoie des reponses
+const afficherReponse = (Function = () => {
+  const trouverReponses = tableauData[0];
+  trouverReponses.Answer.forEach((reponse) => {
+    const creerBouton = document.createElement("button");
+    console.log(creerBouton);
+
+    creerBouton.textContent = reponse;
+    answers.appendChild(creerBouton);
+
+    creerBouton.addEventListener("click", () => {
+      if (reponse === tableauData[0].correct) {
+        numberQuestion++;
+        scoreFinal = 1 + "/" + tableauData.Question.length;
+        console.log(numberQuestion);
+        console.log(scoreFinal);
+        console.log("bonne reponse");
+      } else {
+        scoreFinal = 0 + "/" + tableauData.length;
+      }
+    });
+  });
 });
 
-btn1.addEventListener("click", () => {
-  answer.classList.add("showResponse");
-});
-//////////        Mouse Event ///////////
-
-const mousemoove = document.querySelector(".mousemoove");
-console.log(mousemoove);
-window.addEventListener("mousemove", (e) => {
-  mousemoove.style.left = e.pageX + "px";
-  mousemoove.style.top = e.pageY + "px";
-});
-// KeyPress event //
-
-const keypressContainer = document.querySelector(".keypress");
-//console.log(keypressContainer);
-const key = document.getElementById("key");
-//console.log(key);
-document.addEventListener("keypress", (e) => {
-  key.textContent = e.key;
-  // console.log(e.key);
-  //console.log(key.textContent);
-  if (e.key === "j") {
-    keypressContainer.style.color = "yellow"; // Fixed typo in color name
-  } else {
-    keypressContainer.style.color = "pink";
-  }
+document.addEventListener("DOMContentLoaded", () => {
+  afficherReponse();
 });
