@@ -1,5 +1,7 @@
 // @ts-nocheck
 const tableauQuestion = document.getElementById("tableauQuestion");
+
+const MessageReponse = document.querySelector(".OptionReponse");
 const answers = document.querySelector(".option-reponse");
 const NextQuestion = document.getElementById("btn-1");
 const suiviQuestion = document.querySelector(".numberQuestion");
@@ -12,57 +14,76 @@ let scoreFinal = 0;
 const tableauData = [
   {
     Question: "Capital de la France",
-    Answer: ["Madrid", "Paris", "Bruzelle"],
+    Answer: ["Madrid", "Paris", "Bruxelle"],
     correct: "Paris",
   },
   {
     Question: "Capital de l'Espagne",
-    Answer: ["Madrid", "Paris", "Bruzelle"],
-    correct: "Paris",
+    Answer: ["Madrid", "Paris", "Bruxelle"],
+    correct: "Madrid",
   },
 ];
-// Faire apparaitre la premier question
-// fonction d'envoi de la question //
-const affichageQUestion = function () {
-  const q = tableauData[0];
-  tableauQuestion.textContent = q.Question + " ?";
-  console.log(" Question affiché " + q.Question);
-};
-document.addEventListener("DOMContentLoaded", () => {
-  affichageQUestion();
-});
+// Creer une fonction reutilisable//
+function Questions(number) {
+  const afficherQuestion =
+    " Quelle est la " + tableauData[number].Question + " ?";
+  // Aller chercher l'endroit ou je veux mettre la question//
+  const CreationQuestion = document.createElement("p");
+  CreationQuestion.textContent = afficherQuestion;
+  tableauQuestion.appendChild(CreationQuestion);
+}
+// Creer fonction d'affichage des reponses
 
-// fonction d'envoie des reponses
-const afficherReponse = (Function = () => {
-  const trouverReponses = tableauData[0];
-  trouverReponses.Answer.forEach((reponse) => {
-    const creerBouton = document.createElement("button");
-    console.log(creerBouton);
-
-    creerBouton.textContent = reponse;
-    answers.appendChild(creerBouton);
-
-    creerBouton.addEventListener("click", () => {
-      if (reponse === tableauData[0].correct) {
-        numberQuestion++;
-        const correctAnswer = document.createElement("p");
-        correctAnswer.textContent = " Bonne réponse ";
-        answers.appendChild(correctAnswer);
-      } else {
-        const correctAnswer = document.createElement("p");
-        correctAnswer.textContent = " Mauvaise Réponse";
-        answers.appendChild(correctAnswer);
-      }
-    });
+function ButtonReponse(numberReponse) {
+  const afficherReponse = tableauData[numberReponse].Answer;
+  afficherReponse.forEach((e) => {
+    const creationButton = document.createElement("button");
+    creationButton.textContent = e;
+    answers.appendChild(creationButton);
   });
-});
-document.addEventListener("DOMContentLoaded", () => {
-  afficherReponse();
+}
+
+//Creer une fonction qui verifie si la reponse est correte
+function VerifReponse(AnswerUser) {
+  const goodAnswer = tableauData[numberQuestion].correct;
+  if (goodAnswer === AnswerUser) {
+    console.log("hola");
+  } else {
+    console.log("NON");
+  }
+}
+
+//Au clic sur la bonne reponse, un message en vert" Bonne Reponse"
+answers.innerHTML = "";
+answers.addEventListener("click", (event) => {
+  if (ancienMessage) {
+    ancienMessage.remove();
+  }
+  if (event.target.tagName === "BUTTON") {
+    const repUser = event.target.textContent;
+    console.log("la reponse user est " + repUser);
+    const bonneReponse = tableauData[numberQuestion].correct;
+    if (repUser === bonneReponse) {
+      messageBonneReponse.textContent = "Bonne Reponse";
+      messageBonneReponse.style.color = "green";
+      answers.appendChild(messageBonneReponse);
+    } else if (repUser !== bonneReponse) {
+      const messageMauvaiseReponse = document.createElement("p");
+      messageMauvaiseReponse.textContent = "Mauvaise Reponse";
+      answers.appendChild(messageMauvaiseReponse);
+      // AU clic sur une mauvaise rep, mess en rouge " mauvaise reponse"
+      messageMauvaiseReponse.style.color = "red";
+    }
+  }
 });
 
+// Je veux un compteur qui  à chaque fois qu'une questione est validée avec le bouton Questions
+// suivante incrmente le compteur +1/ sur la taille du tableau
+//Creer un bouton refaire le quizz
+
+//Creer un evenement au clic //
+//
 document.addEventListener("DOMContentLoaded", () => {
-  const ElementSuivi = document.createElement("p");
-  ElementSuivi.textContent = numberQuestion + "/" + tableauData.length;
-  suiviQuestion.appendChild(ElementSuivi);
-  console.log(ElementSuivi);
+  Questions(0);
+  ButtonReponse(0);
 });

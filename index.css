@@ -7,6 +7,29 @@
 
 body {
   text-align: center;
-
-  min-height: 200vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+.container {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+}
+.container button {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+.container button:hover {
+  opacity: 0.5;
+}
+.questions {
+  border: 1px solid red;
 }
