@@ -14,12 +14,15 @@ body {
   min-height: 100vh;
 }
 .container {
-  border: 1px solid black;
+  border: 2px solid black;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 400px;
+  padding: 5px;
 }
 .container button {
   margin: 5px;
@@ -30,6 +33,8 @@ body {
 .container button:hover {
   opacity: 0.5;
 }
-.questions {
-  border: 1px solid red;
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

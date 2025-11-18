@@ -5,11 +5,12 @@ const MessageReponse = document.querySelector(".OptionReponse");
 const answers = document.querySelector(".option-reponse");
 const NextQuestion = document.getElementById("btn-1");
 const suiviQuestion = document.querySelector(".numberQuestion");
-
+const removeQuizz = document.getElementById("remove-Quizz");
+const scoresFinal = document.getElementById("scoreFinal");
 // Mettre le nombre de Q repondu et score final à 0//
 let numberQuestion = 0;
 let scoreFinal = 0;
-
+let messageScoreFinal = "";
 // Creer le tableau de questions
 const tableauData = [
   {
@@ -21,6 +22,22 @@ const tableauData = [
     Question: "Capital de l'Espagne",
     Answer: ["Madrid", "Paris", "Bruxelle"],
     correct: "Madrid",
+  },
+  {
+    Question: "Capital de la Belgique",
+    Answer: ["Madrid", "Paris", "Bruxelles"],
+    correct: "Bruxelles",
+  },
+
+  {
+    Question: "Capital de l'Italie",
+    Answer: ["Madrid", "Paris", "Rome"],
+    correct: "Rome",
+  },
+  {
+    Question: "Capital de l'Autriche",
+    Answer: ["Vienne", "Paris", "Rome"],
+    correct: "Vienne",
   },
 ];
 // Creer une fonction reutilisable//
@@ -43,30 +60,32 @@ function ButtonReponse(numberReponse) {
   });
 }
 
-//Creer une fonction qui verifie si la reponse est correte
-function VerifReponse(AnswerUser) {
-  const goodAnswer = tableauData[numberQuestion].correct;
-  if (goodAnswer === AnswerUser) {
-    console.log("hola");
-  } else {
-    console.log("NON");
-  }
-}
-
 //Au clic sur la bonne reponse, un message en vert" Bonne Reponse"
-answers.innerHTML = "";
+
+//Crrer variable qui desavtive les autres boutons//
+
 answers.addEventListener("click", (event) => {
+  const ancienMessage = answers.querySelector("p");
   if (ancienMessage) {
     ancienMessage.remove();
   }
   if (event.target.tagName === "BUTTON") {
     const repUser = event.target.textContent;
-    console.log("la reponse user est " + repUser);
+
     const bonneReponse = tableauData[numberQuestion].correct;
+    const tousBoutons = answers.querySelectorAll("button");
     if (repUser === bonneReponse) {
+      const messageBonneReponse = document.createElement("p");
       messageBonneReponse.textContent = "Bonne Reponse";
       messageBonneReponse.style.color = "green";
       answers.appendChild(messageBonneReponse);
+
+      console.log(tousBoutons);
+
+      scoreFinal = scoreFinal + 1;
+      console.log(
+        " Score final est de  " + scoreFinal + "/" + tableauData.length
+      );
     } else if (repUser !== bonneReponse) {
       const messageMauvaiseReponse = document.createElement("p");
       messageMauvaiseReponse.textContent = "Mauvaise Reponse";
@@ -74,12 +93,66 @@ answers.addEventListener("click", (event) => {
       // AU clic sur une mauvaise rep, mess en rouge " mauvaise reponse"
       messageMauvaiseReponse.style.color = "red";
     }
+    tousBoutons.forEach((bouton) => {
+      bouton.disabled = true;
+    });
   }
 });
 
 // Je veux un compteur qui  à chaque fois qu'une questione est validée avec le bouton Questions
-// suivante incrmente le compteur +1/ sur la taille du tableau
+
+document.addEventListener("DOMContentLoaded", () => {
+  let monCompteur = numberQuestion + " / " + tableauData.length;
+  const compteurQuestions = document.createElement("p");
+  compteurQuestions.textContent = monCompteur;
+  suiviQuestion.appendChild(compteurQuestions);
+  NextQuestion.addEventListener("click", () => {
+    numberQuestion = numberQuestion + 1;
+    if (numberQuestion < tableauData.length) {
+      monCompteur = numberQuestion + " / " + tableauData.length;
+      compteurQuestions.textContent = monCompteur;
+      tableauQuestion.innerHTML = "";
+      answers.innerHTML = "";
+
+      Questions(numberQuestion);
+      ButtonReponse(numberQuestion);
+    } else {
+      suiviQuestion.style.display = "none";
+      NextQuestion.style.display = "none";
+      tableauQuestion.style.display = "none";
+      answers.style.display = "none";
+      scoresFinal.textContent =
+        " Votre score final est de " + scoreFinal + " / " + tableauData.length;
+      scoresFinal.style.display = "block"; // ✅ Ajoute cette ligne !
+      console.log("Quizz terminé");
+    }
+  });
+});
+// Creer la function remove QUizz
+function renitialiseQuizz() {
+  numberQuestion = 0;
+  scoreFinal = 0;
+  tableauQuestion.innerHTML = "";
+  answers.innerHTML = "";
+  Questions(0);
+  ButtonReponse(0);
+
+  const compteurElement = suiviQuestion.querySelector("p");
+  if (compteurElement) {
+    compteurElement.textContent = " 0 / " + tableauData.length;
+    NextQuestion.style.display = "inline-block";
+    tableauQuestion.style.display = "block";
+    answers.style.display = "block";
+
+    scoresFinal.style.display = "none";
+    scoresFinal.textContent = "";
+  }
+}
+
 //Creer un bouton refaire le quizz
+removeQuizz.addEventListener("click", renitialiseQuizz);
+
+// Creer le score final à la fin du quizz
 
 //Creer un evenement au clic //
 //
